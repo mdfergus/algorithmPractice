@@ -1,0 +1,53 @@
+Check to see if two arrays are the same:
+
+Time and space complex: O(N)
+
+  function arraysAreSame(arr1, arr2) {
+    const arrHolder = {}
+
+    if (arr1.length !== arr2.length) return false
+
+    for (let i = 0; i < arr1.length; i++) {
+      if (arrHolder[arr1[i]]) arrHolder[arr1[i]]++
+      else arrHolder[arr1[i]] = 1
+    }
+
+    for (let j = 0; j < arr2.length; j++) {
+      if (arrHolder[arr2[j]]) arrHolder[arr2[j]]--
+      else return false
+    }
+
+    return true
+  }
+
+
+  console.log(arraysAreSame([1,2,3,4,5], [5,4,3,2,1]))
+  console.log(arraysAreSame([1,2,3,4,5], [5,5,5,2,1]))
+
+
+Convert Roman numberal to base 10 number:
+
+time complexity: O(N), where N is length of Roman string
+
+  function romanNumb(n) {
+    let base10num = 0
+
+    for (let i = 0; i < n.length; i++) {
+      if (convert[n[i - 1]] < convert[n[i]]) base10num += - convert[n[i - 1]] + convert[n[i]]
+      else if (convert[n[i + 1]] <= convert[n[i]] || i === n.length - 1) base10num += convert[n[i]]
+    }
+
+    return base10num
+  }
+
+  const convert = {"I": 1,
+  "V":5,
+  "X":10,
+  "L":50,
+  "C":100,
+  "D":500,
+  "M":1000
+  }
+
+  console.log(romanNumb("XXVIII"))
+  console.log(romanNumb("XXIX"))
