@@ -86,6 +86,7 @@ time complexity: O(logN)
 Bubble Sort:
 
 complexity: O(N^2) average and worst case
+sort time on 20k items: 41932.703ms
 
   function bubble(arr) {
     const len = arr.length
@@ -107,4 +108,132 @@ complexity: O(N^2) average and worst case
   }
 
 
-  bubble([12,5,7,8,1,4,6,7,8,5,3])
+Selection sort:
+
+complexity: O(N^2) for best, average, and worst case
+sort on 20k items: 3664.518ms
+
+  function selection(arr) {
+    const len = arr.length
+    console.time("sort");
+
+    for (let i = 0; i < len - 1; i++) {
+      let min = arr.lastIndexOf(Math.min(...arr.slice(i)))
+      arr = swap(arr, i, min)
+    }
+    console.timeEnd("sort")
+    return arr
+  }
+
+  function swap(arr, left, right) {
+    const holder = arr[left]
+    arr[left] = arr[right]
+    arr[right] = holder
+
+    return arr
+  }
+
+Insertion sort:
+
+Complexity: O(N^2) average and worst case
+
+sort time of 5k items: 22835.934ms
+
+  function insertion(arr) {
+    console.time("sort")
+    const len = arr.length
+
+    for (let i = 1; i < len; i++) {
+      let current = arr[i]
+      j = i
+
+      while (j > 0 && arr[j - 1] > current ) {
+        arr[j] = arr[j-1]
+        j--
+      }
+      arr[j] = current
+    }
+
+
+
+    console.timeEnd("sort")
+    return arr
+  }
+
+  function swap(arr, left, right) {
+    const holder = arr[left]
+    arr[left] = arr[right]
+    arr[right] = holder
+
+    return arr
+  }
+
+
+Merge sort:
+
+Time complexity: O(n Log(n))
+
+sort time of 20k items: 145.361ms
+sort on 150k items: 12863.047ms
+
+  function merge(arr) {
+    const len = arr.length
+
+    if(len <= 1) return arr
+
+    const mid = Math.floor(len / 2)
+    const left = arr.slice(0,mid)
+    const right = arr.slice(mid)
+
+    return mergeThis(merge(left), merge(right))
+  }
+
+  function mergeThis(left, right) {
+    let output = []
+
+    while (left.length && right.length) {
+      if (left[0] < right[0]) output.push(left.shift())
+      else output.push(right.shift())
+    }
+
+    if(right.length) output.push(...right)
+    else output.push(...left)
+
+    return output
+  }
+
+
+Counting Sort (Integer sorting)
+
+Time complexity: O(N+K)
+
+Time to sort 120k items: 15.881ms
+
+  function counting(arr) {
+    let min = Math.min(...arr)
+    const freq = new Array(Math.max(...arr) - min + 1).fill(0)
+
+    for (let i = 0; i < arr.length; i++) {
+      let el = arr[i]
+      freq[el - min]++
+    }
+
+    const output = []
+
+    for (let j = 1; j < freq.length; j++) {
+      let holder = freq[j]
+      freq[j] += freq[j-1]
+    }
+    freq.unshift(0)
+    freq.pop()
+
+    for (let n = 0; n < freq.length; n++) {
+      while (freq[n+1] > freq[n]) {
+        output.push(n + min)
+        freq[n]++
+      }
+    }
+    while (output.length < arr.length) output.push(min + freq.length - 1)
+
+    return output
+  }
